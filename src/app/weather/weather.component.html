@@ -1,0 +1,30 @@
+<div class="u-flex-col">
+    <div class="u-flex-1">
+        <button [routerLink]="'/capitals'" aria-label="Open icon" color="primary" mat-fab type="button">
+            <mat-icon>list</mat-icon>
+        </button>
+        <mat-chip-listbox aria-label="Selected capital">
+            <mat-chip *ngIf="selectedCountryAndWeatherData as data">
+                <img [alt]="data.country.flags.alt" [src]="data.country.flags.png" matChipAvatar />
+                <span class="u-mx-10"><b>{{data.country.capital[0]}}</b>,</span>
+                <span class="u-mx-10">{{data.country.name.common}}</span>
+            </mat-chip>
+        </mat-chip-listbox>
+    </div>
+    <div class="u-flex-1">
+        <mat-card *ngIf="selectedCountryAndWeatherData as data">
+            <mat-card-header>
+                <mat-card-title-group>
+                    <mat-card-title>{{data.weather.main.feels_like}} C</mat-card-title>
+                    <mat-card-subtitle>
+                        <p>{{data.weather.weather[0].description}}</p>
+                        <p>Min: {{data.weather.main.temp_min}} C / Mx: {{data.weather.main.temp_max}} C</p>
+                    </mat-card-subtitle>
+                    <img [alt]="data.weather.weather[0].description" [src]="data.weather.weather[0].icon" mat-card-sm-image />
+                </mat-card-title-group>
+            </mat-card-header>
+        </mat-card>
+
+        <div id="chartdiv" style="width: 100%; height: 500px"></div>
+    </div>
+</div>

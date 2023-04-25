@@ -1,11 +1,24 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import {
-  provideRouter,
-  withEnabledBlockingInitialNavigation,
-} from '@angular/router';
-import { appRoutes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { APP_INITIALIZER, importProvidersFrom, inject } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
+import { routes } from './app/app-routing.module';
+import { ConfigService } from './app/services/config.service';
 
 bootstrapApplication(AppComponent, {
-  providers: [provideRouter(appRoutes, withEnabledBlockingInitialNavigation())],
+    providers: [
+        importProvidersFrom(RouterModule.forRoot(routes)),
+        importProvidersFrom(BrowserAnimationsModule),
+        importProvidersFrom(HttpClientModule),
+        {
+            provide: APP_INITIALIZER,
+            multi: true,
+            useFactory: () => {
+                const configService = inject(ConfigService);
+                return () => configService.load();
+            },
+        },
+    ],
 }).catch((err) => console.error(err));
